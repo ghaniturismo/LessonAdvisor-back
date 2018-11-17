@@ -1,4 +1,3 @@
-import { Injectable } from '@hapiness/core';
 import { Config } from '@hapiness/config';
 import { MongoClientService } from '@hapiness/mongo';
 
@@ -12,6 +11,7 @@ import { Observable } from 'rxjs/Observable';
 import { MongooseDocument } from 'mongoose';
 import { of } from 'rxjs/observable/of';
 import { AbstractDocumentService } from '../abstract-document';
+import {Injectable} from '@hapiness/core';
 
 
 @Injectable()
@@ -49,7 +49,7 @@ export class LessonPlaceDocumentService extends AbstractDocumentService<LessonPl
 
     create(lessonPlace: LessonPlace): Observable<LessonPlace> {
         return fromPromise(this._document.findOne({
-            name: { $regex: new RegExp(lessonPlace.name_teacher, 'i') }
+            name_teacher: { $regex: new RegExp(lessonPlace.name_teacher, 'i') }
         }))
             .pipe(
                 flatMap(_ => !!_ ?
