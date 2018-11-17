@@ -1,22 +1,53 @@
 import { HapinessModule, HttpServerService, OnError, OnStart } from '@hapiness/core';
 import { LoggerModule, LoggerService } from '@hapiness/logger';
-import { Observable } from 'rxjs';
+import { SwagModule } from '@hapiness/swag';
+import { Config } from '@hapiness/config';
+import { MongoClientService, MongoModule } from '@hapiness/mongo';
+import { Observable } from 'rxjs/Observable';
+import {
+    DeleteOnePeopleRoute,
+    GetAllPeopleRoute,
+    GetHelloWorldRoute,
+    GetOnePeopleRoute,
+    PostCreatePeopleRoute,
+    PutUpdatePeopleRoute,
+    PostCreateUserRoute,
+} from './routes';
+import { PeopleDocumentService, PeopleService, UserDocumentService, UserService } from './services';
+import { PeopleModel, UserModel } from './models';
+
+
+// factory to declare dependency between PeopleDocumentService and MongoClientService
+// we use it to be sure that MongoClientService will be loaded before PeopleDocumentService
+const peopleDocumentFactory = (mongoClientService: MongoClientService) => new PeopleDocumentService(mongoClientService);
+const userDocumentFactory = (mongoClientService: MongoClientService) => new UserDocumentService(mongoClientService);
 
 @HapinessModule({
     version: '1.0.0',
     imports: [
-        LoggerModule
+        LoggerModule,
+        SwagModule.setConfig(Config.get('swag')),
+        MongoModule
     ],
-    declarations: [],
+    declarations: [
+        GetHelloWorldRoute, GetAllPeopleRoute, GetOnePeopleRoute, PostCreatePeopleRoute, PutUpdatePeopleRoute, DeleteOnePeopleRoute,
+        PeopleModel,
+        PostCreateUserRoute,
+        UserModel
+    ],
     providers: [
-        HttpServerService
+        HttpServerService,
+        PeopleService,
+        UserService,
+        { provide: PeopleDocumentService, useFactory: peopleDocumentFactory, deps: [MongoClientService] },
+        { provide: UserDocumentService, useFactory: userDocumentFactory, deps: [MongoClientService] },
     ]
 })
 export class ApplicationModule implements OnStart, OnError {
     /**
      * Class constructor
      *
-     * @param _httpServer
+     * @param {HttpServerService} _httpServer wrapper for instance of original Hapi server
      * @param {LoggerService} _logger
      */
     constructor(private _httpServer: HttpServerService, private _logger: LoggerService) {
