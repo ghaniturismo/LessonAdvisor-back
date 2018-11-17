@@ -12,15 +12,26 @@ import {
     PostCreatePeopleRoute,
     PutUpdatePeopleRoute,
     PostCreateUserRoute,
+    PostCreateLessonPlaceRoute,
+    GetOneLessonPlaceRoute
 } from './routes';
-import { PeopleDocumentService, PeopleService, UserDocumentService, UserService } from './services';
-import { PeopleModel, UserModel } from './models';
+import {
+    PeopleDocumentService,
+    PeopleService,
+    UserDocumentService,
+    UserService,
+    LessonPlaceDocumentService,
+    LessonPlaceService
+} from './services';
+import { PeopleModel, UserModel, LessonPlaceModel } from './models';
 
 
 // factory to declare dependency between PeopleDocumentService and MongoClientService
 // we use it to be sure that MongoClientService will be loaded before PeopleDocumentService
 const peopleDocumentFactory = (mongoClientService: MongoClientService) => new PeopleDocumentService(mongoClientService);
 const userDocumentFactory = (mongoClientService: MongoClientService) => new UserDocumentService(mongoClientService);
+const lessonPlaceDocumentFactory = (mongoClientService: MongoClientService) => new LessonPlaceDocumentService(mongoClientService);
+
 
 @HapinessModule({
     version: '1.0.0',
@@ -33,14 +44,20 @@ const userDocumentFactory = (mongoClientService: MongoClientService) => new User
         GetHelloWorldRoute, GetAllPeopleRoute, GetOnePeopleRoute, PostCreatePeopleRoute, PutUpdatePeopleRoute, DeleteOnePeopleRoute,
         PeopleModel,
         PostCreateUserRoute,
-        UserModel
+        UserModel,
+        GetOneLessonPlaceRoute,
+        PostCreateLessonPlaceRoute,
+        LessonPlaceModel
     ],
     providers: [
         HttpServerService,
         PeopleService,
         UserService,
+        LessonPlaceService,
         { provide: PeopleDocumentService, useFactory: peopleDocumentFactory, deps: [MongoClientService] },
         { provide: UserDocumentService, useFactory: userDocumentFactory, deps: [MongoClientService] },
+        { provide: LessonPlaceDocumentService, useFactory: lessonPlaceDocumentFactory, deps: [MongoClientService] }
+
     ]
 })
 export class ApplicationModule implements OnStart, OnError {

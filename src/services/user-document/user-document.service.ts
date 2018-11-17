@@ -10,9 +10,10 @@ import {_throw} from 'rxjs/observable/throw';
 import { flatMap, map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { MongooseDocument } from 'mongoose';
+import {AbstractDocumentService} from '../abstract-document';
 
 @Injectable()
-export class UserDocumentService {
+export class UserDocumentService extends AbstractDocumentService<User> {
     // private property to store document instance
     private _document: any;
 
@@ -22,10 +23,15 @@ export class UserDocumentService {
      * @param {MongoClientService} _mongoClientService
      */
     constructor(private _mongoClientService: MongoClientService) {
+        super();
         this._document = this._mongoClientService.getModel({
             adapter: 'mongoose',
             options: Config.get('mongodb')
         }, UserModel);
+    }
+
+    protected getDocument(): any {
+        return this._document;
     }
 
     create(user: User): Observable<User> {
