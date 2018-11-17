@@ -28,7 +28,7 @@ db.getCollection('people').insertMany([
             "city": "Yardville"
         }
 	}
-});
+]);
 
 
 db.getCollection('people').updateMany({},
