@@ -1,4 +1,5 @@
 import { User } from './user';
+import { Address } from './people';
 
 export interface LessonPlace {
     id?: string,
@@ -10,12 +11,6 @@ export interface LessonPlace {
     description?: string,
     numberOfPerson?: number,
     comments?: Comment[]
-}
-
-export interface Address {
-    street: string;
-    postalCode: number;
-    city: string;
 }
 
 export interface Comment {

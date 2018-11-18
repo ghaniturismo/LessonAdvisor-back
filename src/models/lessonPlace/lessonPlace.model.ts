@@ -68,7 +68,10 @@ export class LessonPlaceModel extends Model {
                 virtuals: true,
                 transform: function (doc, ret) {
                     delete ret._id;
-                    // ret.comments.forEach(v => delete v._id );
+                    ret.comments.forEach(v => {
+                        v.id = v._id.toHexString();
+                        delete v._id }
+                    );
                     return ret;
                 }
             }

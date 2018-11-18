@@ -32,6 +32,9 @@ export class UserModel extends Model {
                 type: String,
                 required: true
             },
+            phone: String,
+            city: String,
+            avatar: String,
             password: {
                 type: String,
                 required: true

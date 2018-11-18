@@ -14,6 +14,9 @@ import {LoggerService} from '@hapiness/logger';
             payload: Joi.object().keys({
                 email: Joi.string().email().required(),
                 fullname: Joi.string().required(),
+                phone: Joi.string(),
+                city: Joi.string(),
+                avatar: Joi.string().uri(),
                 password: Joi.string().required()
             }).required()
         },
@@ -28,13 +31,16 @@ import {LoggerService} from '@hapiness/logger';
                     id: Joi.string().required(),
                     email: Joi.string().email().required(),
                     fullname: Joi.string().required(),
+                    phone: Joi.string(),
+                    city: Joi.string(),
+                    avatar: Joi.string().uri(),
                     password: Joi.string().allow('').max(0)
                 })
             }
         },
-        description: 'Create one user',
-        notes: 'Create a new user and return it',
-        tags: ['api', 'user']
+        description: 'Create one users',
+        notes: 'Create a new users and return it',
+        tags: ['api', 'users']
     }
 })
 export class PostCreateUserRoute implements OnPost {

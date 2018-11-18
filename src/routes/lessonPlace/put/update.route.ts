@@ -1,20 +1,22 @@
-import { Observable } from 'rxjs/Observable';
-import { OnPost, Request, Route } from '@hapiness/core';
-import { LessonPlaceService } from '../../../services/lessonPlace';
-import * as Joi from 'joi';
-import {HTTPHandlerResponse} from '@hapiness/core/extensions/http-server';
-import {tap} from 'rxjs/operators';
-import {LoggerService} from '@hapiness/logger';
+import { OnPut, Request, Route } from '@hapiness/core';
 
-// @ts-ignore
+import { LessonPlaceService } from '../../../services';
+
+import { Observable } from 'rxjs/Observable';
+import * as Joi from 'joi';
+import {LessonPlace} from '../../../interfaces/lessonPlace';
+
 @Route({
-    path: '/api/lessonPlace',
-    method: 'POST',
+    path: '/api/lessonPlace/{id}',
+    method: 'PUT',
     config: {
         validate: {
+            params: {
+                id: Joi.string().required()
+            },
             payload: Joi.object().keys({
                 name_teacher: Joi.string().required(),
-                email: Joi.string().email(),
+                email: Joi.string().email().required(),
                 phone: Joi.string(),
                 website: Joi.string(),
                 address: Joi.object().keys({
@@ -23,8 +25,7 @@ import {LoggerService} from '@hapiness/logger';
                     city: Joi.string().required()
                 }).required(),
                 description: Joi.string(),
-                numberOfPerson: Joi.number(),
-                comments: Joi.array()
+                numberOfPerson: Joi.number()
             })
         },
         payload: {
@@ -34,7 +35,7 @@ import {LoggerService} from '@hapiness/logger';
         },
         response: {
             status: {
-                201: Joi.object().keys({
+                200: Joi.object().keys({
                     id: Joi.string().required(),
                     name_teacher: Joi.string().required(),
                     email: Joi.string().email(),
@@ -47,30 +48,33 @@ import {LoggerService} from '@hapiness/logger';
                     }).required(),
                     description: Joi.string(),
                     numberOfPerson: Joi.number(),
+                    comments: Joi.array().items(Joi.object().keys({
+                        id: Joi.string(),
+                        user: Joi.any().required(),
+                        rating: Joi.number().required(),
+                        text: Joi.string().required()
+                    }))
                 })
             }
         },
-        description: 'Create one lessonPlace',
-        notes: 'Create a new lessonPlace and return it',
+        description: 'Update one lessonPlace',
+        notes: 'Update the lessonPlace for the given id in path parameter and return it',
         tags: ['api', 'lessonPlace']
     }
 })
-export class PostCreateLessonPlaceRoute implements OnPost {
+export class PutUpdateLessonPlaceRoute implements OnPut {
     /**
      * Class constructor
      * @param _lessonPlaceService
-     * @param _logger
      */
-    constructor(private _lessonPlaceService: LessonPlaceService, private _logger: LoggerService) {
+    constructor(private _lessonPlaceService: LessonPlaceService) {
     }
 
     /**
-     * OnPost implementation
+     * OnPut implementation
      * @param request
      */
-    onPost(request: Request): Observable<HTTPHandlerResponse> {
-        return this._lessonPlaceService.create(request.payload).pipe(
-            tap(_ => this._logger.info(_))
-        );
+    onPut(request: Request): Observable<LessonPlace> {
+        return this._lessonPlaceService.update(request.params.id, request.payload);
     }
 }

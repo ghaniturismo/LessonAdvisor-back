@@ -7,13 +7,18 @@ import { Observable } from 'rxjs/Observable';
 import {
     DeleteOnePeopleRoute,
     GetAllPeopleRoute,
-    GetHelloWorldRoute,
     GetOnePeopleRoute,
     PostCreatePeopleRoute,
     PutUpdatePeopleRoute,
+    GetOneUserRoute,
     PostCreateUserRoute,
+    GetAllLessonPlaceRoute,
     PostCreateLessonPlaceRoute,
-    GetOneLessonPlaceRoute
+    PutUpdateLessonPlaceRoute,
+    GetOneLessonPlaceRoute,
+    DeleteOneLessonPlaceRoute,
+    PostCreateLessonPlaceCommentRoute,
+    DeleteOneLessonPlaceCommentRoute
 } from './routes';
 import {
     PeopleDocumentService,
@@ -26,8 +31,8 @@ import {
 import { PeopleModel, UserModel, LessonPlaceModel } from './models';
 
 
-// factory to declare dependency between PeopleDocumentService and MongoClientService
-// we use it to be sure that MongoClientService will be loaded before PeopleDocumentService
+// factories to declare dependency between DocumentService and MongoClientService
+// we use it to be sure that MongoClientService will be loaded before DocumentService
 const peopleDocumentFactory = (mongoClientService: MongoClientService) => new PeopleDocumentService(mongoClientService);
 const userDocumentFactory = (mongoClientService: MongoClientService) => new UserDocumentService(mongoClientService);
 const lessonPlaceDocumentFactory = (mongoClientService: MongoClientService) => new LessonPlaceDocumentService(mongoClientService);
@@ -41,12 +46,18 @@ const lessonPlaceDocumentFactory = (mongoClientService: MongoClientService) => n
         MongoModule
     ],
     declarations: [
-        GetHelloWorldRoute, GetAllPeopleRoute, GetOnePeopleRoute, PostCreatePeopleRoute, PutUpdatePeopleRoute, DeleteOnePeopleRoute,
+        GetAllPeopleRoute, GetOnePeopleRoute, PostCreatePeopleRoute, PutUpdatePeopleRoute, DeleteOnePeopleRoute,
         PeopleModel,
+        GetOneUserRoute,
         PostCreateUserRoute,
+        GetAllLessonPlaceRoute,
         UserModel,
         GetOneLessonPlaceRoute,
         PostCreateLessonPlaceRoute,
+        PutUpdateLessonPlaceRoute,
+        DeleteOneLessonPlaceRoute,
+        PostCreateLessonPlaceCommentRoute,
+        DeleteOneLessonPlaceCommentRoute,
         LessonPlaceModel
     ],
     providers: [
@@ -89,5 +100,6 @@ export class ApplicationModule implements OnStart, OnError {
      */
     onError(error: Error, data?: any): void | Observable<any> {
         this._logger.error('A problem occurred during application\'s lifecycle');
+        this._logger.error(error.message);
     }
 }

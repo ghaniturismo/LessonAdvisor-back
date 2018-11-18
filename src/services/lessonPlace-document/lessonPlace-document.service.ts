@@ -62,8 +62,20 @@ export class LessonPlaceDocumentService extends AbstractDocumentService<LessonPl
             );
     }
 
-    addComment(id: string, comment: Comment): Observable<LessonPlace> {
+
+    createComment(id: string, comment: Comment): Observable<LessonPlace> {
         return fromPromise(this._document.findByIdAndUpdate(id, { $push: { comments: comment } }, { new: true }))
+            .pipe(
+                flatMap((doc: MongooseDocument) =>
+                    !!doc ?
+                        of(doc.toJSON() as LessonPlace) :
+                        of(undefined)
+                )
+            )
+    }
+
+    removeCommentById(id: string, commentId: string): Observable<LessonPlace> {
+        return fromPromise(this._document.findByIdAndUpdate(id, { $pull: { comments: {_id: commentId} } }, { new: true}))
             .pipe(
                 flatMap((doc: MongooseDocument) =>
                     !!doc ?

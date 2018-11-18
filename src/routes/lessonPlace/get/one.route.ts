@@ -29,7 +29,7 @@ import { LessonPlaceService } from '../../../services/lessonPlace';
                     description: Joi.string(),
                     numberOfPerson: Joi.number(),
                     comments: Joi.array().items(Joi.object().keys({
-                        _id: Joi.any(),
+                        id: Joi.any(),
                         user: Joi.object().keys({
                             id: Joi.string().required(),
                             fullname: Joi.string().required(),

@@ -1,5 +1,3 @@
-import {Injectable} from '@hapiness/core';
-import {Config} from '@hapiness/config';
 import {MongoClientService} from '@hapiness/mongo';
 
 import {UserModel} from '../../models/user';
@@ -11,6 +9,8 @@ import { flatMap, map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { MongooseDocument } from 'mongoose';
 import {AbstractDocumentService} from '../abstract-document';
+import {Injectable} from '@hapiness/core';
+import {Config} from '@hapiness/config';
 
 @Injectable()
 export class UserDocumentService extends AbstractDocumentService<User> {
@@ -48,5 +48,20 @@ export class UserDocumentService extends AbstractDocumentService<User> {
                 map((doc: MongooseDocument) => doc.toJSON() as User),
                 tap((u: User) => u.password = '')
             );
+    }
+
+    /**
+     * Returns an user maching the id and hides his password
+     * @param {String} id
+     * @returns {Observable<void | User>}
+     */
+    findById(id: string): Observable<void | User> {
+        return super.findById(id).pipe(
+            tap((user: User) =>
+                !!user ?
+                    user.password = '' :
+                    undefined
+            )
+        );
     }
 }
