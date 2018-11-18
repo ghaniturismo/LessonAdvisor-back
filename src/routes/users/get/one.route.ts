@@ -1,11 +1,8 @@
 import { OnGet, Route, Request } from '@hapiness/core';
 import { Observable } from 'rxjs/Observable';
-
+import * as Joi from 'joi';
 import { User } from '../../../interfaces/user';
 import { UserService } from '../../../services/user/user.service';
-
-import * as Joi from 'joi';
-
 
 @Route({
     path: '/api/users/{id}',

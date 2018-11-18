@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import * as Joi from 'joi';
 
 @Route({
-    path: '/api/lessonPlace',
+    path: '/api/lessonplaces',
     method: 'GET',
     config: {
         response: {
@@ -15,34 +15,32 @@ import * as Joi from 'joi';
                 200: Joi.array().items(
                     Joi.object().keys({
                         id: Joi.string().required(),
-                        name: Joi.string().required(),
-                        email: Joi.string().email(),
-                        phone: Joi.string(),
-                        website: Joi.string(),
+                        name_teacher: Joi.string().required(),
+                        email: Joi.string().email().allow(''),
+                        phone: Joi.string().allow(''),
+                        website: Joi.string().allow(''),
                         address: Joi.object().keys({
                             street: Joi.string().required(),
                             postalCode: Joi.number().required(),
                             city: Joi.string().required()
                         }).required(),
                         description: Joi.string(),
-                        staffNumber: Joi.number(),
-                        comments: Joi.array()
-
+                        numberOfPerson: Joi.number()
                     })
                 ).unique('id').min(1)
             }
         },
-        description: 'Get all lessonPlace',
-        notes: 'Returns an array of lessonPlace or 204',
-        tags: ['api', 'lessonPlace']
+        description: 'Get all lessonplaces',
+        notes: 'Returns an array of lessonplaces or 204',
+        tags: ['api', 'lessonplaces']
     }
 })
 export class GetAllLessonPlaceRoute implements OnGet {
     /**
      * Class constructor
-     * @param _nurseryService
+     * @param _lessonPlace
      */
-    constructor(private _nurseryService: LessonPlaceService) {
+    constructor(private _lessonPlace: LessonPlaceService) {
     }
 
     /**
@@ -50,6 +48,6 @@ export class GetAllLessonPlaceRoute implements OnGet {
      * @param request
      */
     onGet(request: Request): Observable<LessonPlace[] | void> {
-        return this._nurseryService.listAll();
+        return this._lessonPlace.listAll();
     }
 }

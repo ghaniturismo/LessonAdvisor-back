@@ -1,3 +1,5 @@
+import {Address} from './lessonPlace';
+
 export interface People {
     id?: string;
     photo?: string;
@@ -6,10 +8,4 @@ export interface People {
     email: string;
     phone: string;
     address: Address;
-}
-
-export interface Address {
-    street: string;
-    postalCode: number;
-    city: string;
 }

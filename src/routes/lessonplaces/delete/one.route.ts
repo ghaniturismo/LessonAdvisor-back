@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import * as Joi from 'joi';
 
 @Route({
-    path: '/api/lessonPlace/{id}',
+    path: '/api/lessonplaces/{id}',
     method: 'DELETE',
     config: {
         validate: {
@@ -14,9 +14,9 @@ import * as Joi from 'joi';
                 id: Joi.string().required()
             }
         },
-        description: 'Delete one lessonPlace',
-        notes: 'Delete one lessonPlace for the given id in path parameter',
-        tags: ['api', 'lessonPlace']
+        description: 'Delete one lessonplaces',
+        notes: 'Delete one lessonplaces for the given id in path parameter',
+        tags: ['api', 'lessonplaces']
     }
 })
 export class DeleteOneLessonPlaceRoute implements OnDelete {

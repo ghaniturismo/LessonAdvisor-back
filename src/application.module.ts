@@ -5,35 +5,25 @@ import { Config } from '@hapiness/config';
 import { MongoClientService, MongoModule } from '@hapiness/mongo';
 import { Observable } from 'rxjs/Observable';
 import {
-    DeleteOnePeopleRoute,
-    GetAllPeopleRoute,
-    GetOnePeopleRoute,
-    PostCreatePeopleRoute,
-    PutUpdatePeopleRoute,
     GetOneUserRoute,
     PostCreateUserRoute,
     GetAllLessonPlaceRoute,
     PostCreateLessonPlaceRoute,
     PutUpdateLessonPlaceRoute,
     GetOneLessonPlaceRoute,
-    DeleteOneLessonPlaceRoute,
-    PostCreateLessonPlaceCommentRoute,
-    DeleteOneLessonPlaceCommentRoute
+    DeleteOneLessonPlaceRoute
 } from './routes';
 import {
-    PeopleDocumentService,
-    PeopleService,
     UserDocumentService,
     UserService,
     LessonPlaceDocumentService,
     LessonPlaceService
 } from './services';
-import { PeopleModel, UserModel, LessonPlaceModel } from './models';
+import { UserModel, LessonPlaceModel } from './models';
 
 
 // factories to declare dependency between DocumentService and MongoClientService
 // we use it to be sure that MongoClientService will be loaded before DocumentService
-const peopleDocumentFactory = (mongoClientService: MongoClientService) => new PeopleDocumentService(mongoClientService);
 const userDocumentFactory = (mongoClientService: MongoClientService) => new UserDocumentService(mongoClientService);
 const lessonPlaceDocumentFactory = (mongoClientService: MongoClientService) => new LessonPlaceDocumentService(mongoClientService);
 
@@ -46,8 +36,6 @@ const lessonPlaceDocumentFactory = (mongoClientService: MongoClientService) => n
         MongoModule
     ],
     declarations: [
-        GetAllPeopleRoute, GetOnePeopleRoute, PostCreatePeopleRoute, PutUpdatePeopleRoute, DeleteOnePeopleRoute,
-        PeopleModel,
         GetOneUserRoute,
         PostCreateUserRoute,
         GetAllLessonPlaceRoute,
@@ -56,16 +44,12 @@ const lessonPlaceDocumentFactory = (mongoClientService: MongoClientService) => n
         PostCreateLessonPlaceRoute,
         PutUpdateLessonPlaceRoute,
         DeleteOneLessonPlaceRoute,
-        PostCreateLessonPlaceCommentRoute,
-        DeleteOneLessonPlaceCommentRoute,
         LessonPlaceModel
     ],
     providers: [
         HttpServerService,
-        PeopleService,
         UserService,
         LessonPlaceService,
-        { provide: PeopleDocumentService, useFactory: peopleDocumentFactory, deps: [MongoClientService] },
         { provide: UserDocumentService, useFactory: userDocumentFactory, deps: [MongoClientService] },
         { provide: LessonPlaceDocumentService, useFactory: lessonPlaceDocumentFactory, deps: [MongoClientService] }
 

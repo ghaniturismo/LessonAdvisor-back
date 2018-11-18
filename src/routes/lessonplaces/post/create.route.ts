@@ -1,27 +1,29 @@
-import { OnPost, Route, Request, HTTPHandlerResponse} from '@hapiness/core';
 import { Observable } from 'rxjs/Observable';
-
-import { PeopleService } from '../../../services'
+import { OnPost, Request, Route } from '@hapiness/core';
+import { LessonPlaceService } from '../../../services/lessonPlace';
 import * as Joi from 'joi';
+import {HTTPHandlerResponse} from '@hapiness/core/extensions/http-server';
 import {tap} from 'rxjs/operators';
 import {LoggerService} from '@hapiness/logger';
 
+// @ts-ignore
 @Route({
-    path: '/api/people',
+    path: '/api/lessonplaces',
     method: 'POST',
     config: {
         validate: {
             payload: Joi.object().keys({
-                photo: Joi.string(),
-                firstname: Joi.string().required(),
-                lastname: Joi.string().required(),
-                email: Joi.string().email().required(),
-                phone: Joi.string().required(),
+                name_teacher: Joi.string().required(),
+                email: Joi.string().email(),
+                phone: Joi.string(),
+                website: Joi.string(),
                 address: Joi.object().keys({
                     street: Joi.string().required(),
                     postalCode: Joi.number().required(),
                     city: Joi.string().required()
-                }).required()
+                }).required(),
+                description: Joi.string(),
+                numberOfPerson: Joi.number()
             })
         },
         payload: {
@@ -33,31 +35,32 @@ import {LoggerService} from '@hapiness/logger';
             status: {
                 201: Joi.object().keys({
                     id: Joi.string().required(),
-                    photo: Joi.string(),
-                    firstname: Joi.string().required(),
-                    lastname: Joi.string().required(),
-                    email: Joi.string().email().required(),
-                    phone: Joi.string().required(),
+                    name_teacher: Joi.string().required(),
+                    email: Joi.string().email(),
+                    phone: Joi.string(),
+                    website: Joi.string(),
                     address: Joi.object().keys({
                         street: Joi.string().required(),
                         postalCode: Joi.number().required(),
                         city: Joi.string().required()
-                    }).required()
+                    }).required(),
+                    description: Joi.string(),
+                    numberOfPerson: Joi.number(),
                 })
             }
         },
-        description: 'Create one people',
-        notes: 'Create a new people and return it',
-        tags: ['api', 'people']
+        description: 'Create one lessonplaces',
+        notes: 'Create a new lessonplaces and return it',
+        tags: ['api', 'lessonplaces']
     }
 })
-export class PostCreatePeopleRoute implements OnPost {
+export class PostCreateLessonPlaceRoute implements OnPost {
     /**
      * Class constructor
-     * @param _peopleService
+     * @param _lessonPlaceService
      * @param _logger
      */
-    constructor(private _peopleService: PeopleService, private _logger: LoggerService) {
+    constructor(private _lessonPlaceService: LessonPlaceService, private _logger: LoggerService) {
     }
 
     /**
@@ -65,7 +68,7 @@ export class PostCreatePeopleRoute implements OnPost {
      * @param request
      */
     onPost(request: Request): Observable<HTTPHandlerResponse> {
-        return this._peopleService.create(request.payload).pipe(
+        return this._lessonPlaceService.create(request.payload).pipe(
             tap(_ => this._logger.info(_))
         );
     }

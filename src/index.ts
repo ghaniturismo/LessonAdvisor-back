@@ -2,7 +2,6 @@ import { HapiConfig, Hapiness, HttpServerExt } from '@hapiness/core';
 import { LoggerExt } from '@hapiness/logger';
 import { Config } from '@hapiness/config';
 import { MongoClientExt } from '@hapiness/mongo';
-
 import { ApplicationModule } from './application.module';
 
 // bootstrap application

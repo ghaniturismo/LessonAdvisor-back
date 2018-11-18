@@ -5,7 +5,7 @@ import { LessonPlace } from '../../../interfaces/lessonPlace';
 import { LessonPlaceService } from '../../../services/lessonPlace';
 
 @Route({
-    path: '/api/lessonPlace/{id}',
+    path: '/api/lessonplaces/{id}',
     method: 'GET',
     config: {
         validate: {
@@ -27,22 +27,13 @@ import { LessonPlaceService } from '../../../services/lessonPlace';
                         city: Joi.string().required()
                     }).required(),
                     description: Joi.string(),
-                    numberOfPerson: Joi.number(),
-                    comments: Joi.array().items(Joi.object().keys({
-                        id: Joi.any(),
-                        user: Joi.object().keys({
-                            id: Joi.string().required(),
-                            fullname: Joi.string().required(),
-                        }).required(),
-                        rating: Joi.number().required(),
-                        text: Joi.string().required()
-                    }))
-                })
+                    numberOfPerson: Joi.number()
+                 })
             }
         },
-        description: 'Get one lessonPlace',
-        notes: 'Returns one lessonPlace for the given id in path parameter',
-        tags: ['api', 'lessonPlace']
+        description: 'Get one lessonplaces',
+        notes: 'Returns one lessonplaces for the given id in path parameter',
+        tags: ['api', 'lessonplaces']
     }
 })
 export class GetOneLessonPlaceRoute implements OnGet {

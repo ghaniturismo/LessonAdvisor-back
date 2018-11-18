@@ -7,7 +7,7 @@ import * as Joi from 'joi';
 import {LessonPlace} from '../../../interfaces/lessonPlace';
 
 @Route({
-    path: '/api/lessonPlace/{id}',
+    path: '/api/lessonplaces/{id}',
     method: 'PUT',
     config: {
         validate: {
@@ -16,7 +16,7 @@ import {LessonPlace} from '../../../interfaces/lessonPlace';
             },
             payload: Joi.object().keys({
                 name_teacher: Joi.string().required(),
-                email: Joi.string().email().required(),
+                email: Joi.string().email(),
                 phone: Joi.string(),
                 website: Joi.string(),
                 address: Joi.object().keys({
@@ -48,18 +48,12 @@ import {LessonPlace} from '../../../interfaces/lessonPlace';
                     }).required(),
                     description: Joi.string(),
                     numberOfPerson: Joi.number(),
-                    comments: Joi.array().items(Joi.object().keys({
-                        id: Joi.string(),
-                        user: Joi.any().required(),
-                        rating: Joi.number().required(),
-                        text: Joi.string().required()
-                    }))
                 })
             }
         },
-        description: 'Update one lessonPlace',
-        notes: 'Update the lessonPlace for the given id in path parameter and return it',
-        tags: ['api', 'lessonPlace']
+        description: 'Update one lessonplaces',
+        notes: 'Update the lessonplaces for the given id in path parameter and return it',
+        tags: ['api', 'lessonplaces']
     }
 })
 export class PutUpdateLessonPlaceRoute implements OnPut {

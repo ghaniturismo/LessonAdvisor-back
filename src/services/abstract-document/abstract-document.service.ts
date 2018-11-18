@@ -1,8 +1,6 @@
-import { DocumentService } from '../../interfaces/documentService';
+import { DocumentService } from '../../interfaces';
 import { Observable } from 'rxjs/Observable';
-import { fromPromise } from 'rxjs/observable/fromPromise';
-import { of } from 'rxjs/observable/of';
-import { flatMap, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { MongooseDocument } from 'mongoose';
 import {from} from 'rxjs';
 
@@ -30,17 +28,13 @@ export abstract class AbstractDocumentService<T> implements DocumentService<T> {
      *
      * @return {Observable<T | void>}
      */
-    findById(id: string): Observable<void | T> {
-        return fromPromise(this.getDocument().findById(id))
-            .pipe(
-                flatMap((doc: MongooseDocument) =>
-                    !!doc ?
-                        of(doc.toJSON() as T) :
-                        of(undefined)
-                )
-            )
-    }
 
+    findById(id: string): Observable<void | T> {
+        return from(this.getDocument().findById(id))
+            .pipe(
+                map((doc: MongooseDocument) => !!doc ? doc.toJSON() : undefined)
+            );
+    }
     /**
      * Check if person already exists and add it in T list
      *
@@ -59,14 +53,10 @@ export abstract class AbstractDocumentService<T> implements DocumentService<T> {
      * @return {Observable<T>}
      */
     findByIdAndUpdate(id: string, document: T): Observable<T> {
-        return fromPromise(this.getDocument().findByIdAndUpdate(id, document, { new: true }))
+        return from(this.getDocument().findByIdAndUpdate(id, document, { new: true }))
             .pipe(
-                flatMap((doc: MongooseDocument) =>
-                    !!doc ?
-                        of(doc.toJSON() as T) :
-                        of(undefined)
-                )
-            )
+                map((doc: MongooseDocument) => !!doc ? doc.toJSON() : undefined)
+            );
     }
 
     /**
@@ -77,13 +67,9 @@ export abstract class AbstractDocumentService<T> implements DocumentService<T> {
      * @return {Observable<T>}
      */
     findByIdAndRemove(id: string): Observable<T> {
-        return fromPromise(this.getDocument().findByIdAndRemove(id))
+        return from(this.getDocument().findByIdAndRemove(id))
             .pipe(
-                flatMap((doc: MongooseDocument) =>
-                    !!doc ?
-                        of(doc.toJSON() as T) :
-                        of(undefined)
-                )
+                map((doc: MongooseDocument) => !!doc ? doc.toJSON() : undefined)
             )
     }
 

@@ -1,11 +1,8 @@
 import { Model, MongoClientService, MongoModel } from '@hapiness/mongo';
-import { Config } from '@hapiness/config';
-import { Schema } from 'mongoose';
 
 @MongoModel({
     adapter: 'mongoose',
-    collection: 'lesson',
-    options: Config.get('mongodb')
+    collection: 'lessonplaces',
 })
 export class LessonPlaceModel extends Model {
     // property to store schema
@@ -47,19 +44,8 @@ export class LessonPlaceModel extends Model {
                 }
             },
             description: String,
-            numberOfPerson: Number,
-            comments: [{
-                user: { type: Schema.Types.ObjectId, ref: 'users' },
-                rating: {
-                    type: Number,
-                    required: true
-                },
-                text: {
-                    type: String,
-                    required: true
-                }
-            }]
-        }, {
+            numberOfPerson: Number
+    }, {
             versionKey: false
         });
 
@@ -68,10 +54,6 @@ export class LessonPlaceModel extends Model {
                 virtuals: true,
                 transform: function (doc, ret) {
                     delete ret._id;
-                    ret.comments.forEach(v => {
-                        v.id = v._id.toHexString();
-                        delete v._id }
-                    );
                     return ret;
                 }
             }
