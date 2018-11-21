@@ -22,7 +22,7 @@ import { UserService } from '../../../services/user/user.service';
                     phone: Joi.string(),
                     city: Joi.string(),
                     avatar: Joi.string().uri(),
-                    password: Joi.string().allow('').max(0)
+                    password: Joi.string()
                 })
             }
         },

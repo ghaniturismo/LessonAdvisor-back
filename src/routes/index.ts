@@ -1,2 +1,2 @@
 export * from './users';
-export * from './lessonplaces';
+export *  from './lessonplaces'

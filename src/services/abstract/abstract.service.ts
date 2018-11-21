@@ -33,7 +33,7 @@ export abstract class AbstractService<T> {
     }
 
     /**
-     * Check if person already exists and add it in people list
+     * Check if object already exists and add it the list
      *
      *
      * @returns {Observable<HTTPHandlerResponse>}
@@ -46,7 +46,7 @@ export abstract class AbstractService<T> {
                 catchError(e =>
                     e.code = 11000 ?
                         throwError(
-                            Biim.conflict(`erreur abstract.service rename later`)
+                            Biim.conflict(`erreur abstract.service`)
                         ) :
                         throwError(Biim.preconditionFailed(e.message))
                 ),
@@ -55,7 +55,7 @@ export abstract class AbstractService<T> {
     }
 
     /**
-     * Add person with good data in people list
+     * Add with good data in Any list
      *
      *
      * @returns {Observable<any>}
@@ -70,9 +70,9 @@ export abstract class AbstractService<T> {
 
 
     /**
-     * Update a person in people list
+     * Update
      *
-     * @param {string} id of the person to update
+     * @param {string} id of who wont to update
      * @param document data to update
      *
      * @returns {Observable<T>}
@@ -96,9 +96,9 @@ export abstract class AbstractService<T> {
     }
 
     /**
-     * Deletes on person in people list
+     * Deletes
      *
-     * @param {string} id of the person to delete
+     * @param {string} id who wont to delete
      *
      * @returns {Observable<any>}
      */

@@ -8,9 +8,12 @@ import {
     GetOneUserRoute,
     PostCreateUserRoute,
     GetAllLessonPlaceRoute,
+    GetAllUserRoute,
     PostCreateLessonPlaceRoute,
     PutUpdateLessonPlaceRoute,
+    PutUpdateUserPlaceRoute,
     GetOneLessonPlaceRoute,
+    DeleteOneUserRoute,
     DeleteOneLessonPlaceRoute
 } from './routes';
 import {
@@ -39,11 +42,14 @@ const lessonPlaceDocumentFactory = (mongoClientService: MongoClientService) => n
         GetOneUserRoute,
         PostCreateUserRoute,
         GetAllLessonPlaceRoute,
+        GetAllUserRoute,
         UserModel,
         GetOneLessonPlaceRoute,
         PostCreateLessonPlaceRoute,
         PutUpdateLessonPlaceRoute,
+        PutUpdateUserPlaceRoute,
         DeleteOneLessonPlaceRoute,
+        DeleteOneUserRoute,
         LessonPlaceModel
     ],
     providers: [
